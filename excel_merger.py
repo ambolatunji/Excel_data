@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from io import BytesIO
 from pathlib import Path
 
 # Define functions to handle file uploads and merging
@@ -32,6 +33,14 @@ def align_and_concatenate(files):
     
     return pd.concat(dataframes, ignore_index=True)
 
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+
 # Main App
 st.title("Excel File Merger")
 
@@ -50,9 +59,12 @@ if page == "Merge Matching Files":
         st.write("Merged Data:")
         st.write(result_df)
         
-        # Provide download option
-        csv = result_df.to_csv(index=False)
+        # Provide download options
+        csv = result_df.to_csv(index=False).encode('utf-8')
+        excel = to_excel(result_df)
+        
         st.download_button(label="Download Merged CSV", data=csv, file_name="merged_data.csv", mime="text/csv")
+        st.download_button(label="Download Merged Excel", data=excel, file_name="merged_data.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     
 # Page 2: Merge Files with Different Columns
 elif page == "Merge and Align Different Files":
@@ -66,6 +78,9 @@ elif page == "Merge and Align Different Files":
         st.write("Aligned and Merged Data:")
         st.write(result_df)
         
-        # Provide download option
-        csv = result_df.to_csv(index=False)
+        # Provide download options
+        csv = result_df.to_csv(index=False).encode('utf-8')
+        excel = to_excel(result_df)
+        
         st.download_button(label="Download Merged and Aligned CSV", data=csv, file_name="aligned_merged_data.csv", mime="text/csv")
+        st.download_button(label="Download Merged and Aligned Excel", data=excel, file_name="aligned_merged_data.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
