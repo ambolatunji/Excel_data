@@ -1,4 +1,4 @@
 [server]
-enableXsrfProtection=false
+#enableXsrfProtection=false
 maxUploadSize=536870912000 # 500 GB in bytes
 
