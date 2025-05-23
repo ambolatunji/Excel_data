@@ -9,7 +9,7 @@ from collections import defaultdict
 import tempfile
 import shutil
 
-st.set_option('server.maxUploadSize', 500 * 1024)  # 500 GB in MB, but Streamlit will cap at 200 MB
+#st.set_option('server.maxUploadSize', 500 * 1024)  # 500 GB in MB, but Streamlit will cap at 200 MB
 st.set_page_config(page_title="Excel Merger + Summary", layout="centered")
 st.title("📦 Merge ZIPs → Excel Sheets + Summary + ZIP Export")
 
